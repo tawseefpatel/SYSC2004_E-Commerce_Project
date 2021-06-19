@@ -1,0 +1,111 @@
+@startuml
+title Milestone 5: UML Diagram\n    Tawseef & Gilles
+skinparam classAttributeIconSize 0
+skinparam backgroundColor white
+
+'draw layout here'
+myStore.Product  <---* myStore.Inventory
+myStore.Product  <--[dashed]- myStore.Inventory : create
+myStore.Product  "*"--"1" myStore.Inventory
+myStore.Inventory <-[dashed]- myStore.StoreManager : create
+myStore.ShoppingCart <-[dashed]- myStore.StoreManager : create
+myStore.ShoppingCart <--* myStore.StoreManager
+myStore.ShoppingCart  "*"---"1" myStore.StoreManager
+myStore.Inventory <--* myStore.StoreManager
+myStore.StoreManager  "1"---"*" myStore.Inventory
+myStore.Product <---* myStore.ShoppingCart
+myStore.Product  "*"---"1" myStore.ShoppingCart
+myStore.StoreManager <---* myStore.StoreView
+myStore.StoreManager "1"---"1" myStore.StoreView
+myStore.StoreView  -[dashed]-> myStore.StoreManager :create
+myStore.ProductStockContainer <|.. myStore.ShoppingCart
+myStore.ProductStockContainer <|.. myStore.Inventory
+
+class myStore.StoreManager #line:black;back:lightgrey {
+- Inventory inv
+- HashMap<ShoppingCart,Integer> allCarts
+- int cartIdCounter
++ Inventory getInv()
++ int stockLoopUp(String)
++ void generateCartId(ShoppingCart)
++ void cartCreation()
++ int getCartId(ShoppingCart)
++ ShoppingCart getCart()
++ ShoppingCart getCart(int)
++ void addItemToCart(int,String,int)
++ void removeCartItem(int,String,int)
++ HashMap<ShoppingCart,Integer> getAllCarts()
+}
+class myStore.ShoppingCart  #line:black;back:lightgrey {
+- HashMap<Product,Integer> shopCart
++ void emptyCart()
++ Product getProducts()
++ ArrayList<Product> getProduct()
++ int getNumOfProducts()
++ int getProductQuantity(Product)
++ void addProductQuantity(Product,int)
++ void removeProductQuantity(Product,int)
++ String viewCart()
++ String checkOut()
+}
+class myStore.Product  #line:black;back:lightgrey {
+- String prodName
+- String prodId
+- double prodPrice
++ String getProdName()
++ String getProdId()
++ double getProdPrice()
++ boolean equals(Product)
++ boolean equals(String,String,double)
+}
+interface myStore.ProductStockContainer  #line:black;back:lightgrey {
+~ int getProductQuantity(Product)
+~ void addProductQuantity(Product,int)
+~ void removeProductQuantity(Product,int)
+~ int getNumOfProducts()
+}
+class myStore.Inventory  #line:black;back:lightgrey {
+- HashMap<Product,Integer> prodInfo
++ Product getProd(String)
++ int getNumOfProducts()
++ int getProductQuantity(Product)
++ int getStockAmount(String)
++ void addProductQuantity(Product,int)
++ void addStockAmount(String,int)
++ void removeProductQuantity(Product,int)
++ void removeStockAmount(String,int)
+}
+class myStore.StoreView  #line:black;back:lightgrey {
+- StoreManager storeManager
+- JTextArea cartItems
+- JPanel bodyPanel1
+- JPanel bodyPanel2
+- JPanel bodyPanel3
+- JPanel bodyPanel4
+- JPanel bodyPanel5
+- JPanel bodyPanel6
+- JLabel jLabel1
+- JLabel jLabel2
+- JLabel jLabel3
+- JLabel jLabel4
+- JLabel jLabel5
+- JLabel jLabel6
+- JFrame frame
+- JFrame checkOutFrame
++ {static} void main(String[])
++ void displayGUI()
+- void addImage(JPanel,String)
+- void itemDescription(JPanel,JLabel,String)
+- void updateDescription(JLabel,String)
+- void dropDownMenu(JPanel,String)
+- void updateAddDD(JButton,JComboBox<Integer>,String)
+- void updateRemoveDD(JButton,JComboBox<Integer>,Product)
+- void callToUpdateDescription(JPanel,String)
+- void updateCart()
+- void checkOut()
+- void quit(JPanel)
+}
+
+
+
+@enduml
